@@ -1,11 +1,11 @@
-import semver from "semver";
-import Project from "../Project";
+import semver from 'semver';
+import Project from '../lib/Project';
 /*import Config from "../Config";
 import Package from "../Package";
 import * as messages from "./messages";
 import { BoltError } from "./errors";*/
-import { error as loggerError } from "./logger";
-import { BOLT_VERSION } from "../constants";
+import { error as loggerError } from './logger';
+import { BOLT_VERSION } from '../lib/constants';
 
 const validateProject = async (project: Project) => {
   let packages = await project.getPackages();
@@ -20,7 +20,7 @@ const validateProject = async (project: Project) => {
   if (boltConfigVersion) {
     if (!semver.satisfies(BOLT_VERSION, boltConfigVersion)) {
       loggerError(
-        "invalidBoltVersion"
+        'invalidBoltVersion'
         /*messages.invalidBoltVersion(BOLT_VERSION, boltConfigVersion)*/
       );
 
@@ -51,7 +51,7 @@ const validateProject = async (project: Project) => {
 
     if (projectDependencies.has(depName)) {
       loggerError(
-        "projectCannotDependOnWorkspace" /*messages.projectCannotDependOnWorkspace(depName)*/
+        'projectCannotDependOnWorkspace' /*messages.projectCannotDependOnWorkspace(depName)*/
       );
 
       projectIsValid = false;

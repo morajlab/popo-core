@@ -1,10 +1,10 @@
-import { dirname, join } from "path";
+import { dirname, join } from 'path';
 //import includes from 'array-includes';
-import semver from "semver";
-import Package from "./Package";
-import Config from "./Config";
-import { stat } from "./utils/fs";
-import { error as loggerError } from "./utils/logger";
+import semver from 'semver';
+import Package from './Package';
+import Config from './Config';
+import { stat } from '../utils/fs';
+import { error as loggerError } from '../utils/logger';
 /*import {
   promiseWrapper,
   promiseWrapperSuccess,
@@ -12,8 +12,8 @@ import { error as loggerError } from "./utils/logger";
   PromiseFailure
 } from './utils/promiseWrapper';
 import * as messages from './utils/messages';*/
-import { BoltError } from "./utils/errors";
-import { findWorkspaces } from "./utils/globs";
+import { BoltError } from '../utils/errors';
+import { findWorkspaces } from '../utils/globs';
 /*import taskGraphRunner from 'task-graph-runner';
 import * as env from './utils/env';
 import chunkd from 'chunkd';*/
@@ -67,7 +67,7 @@ export default class Project {
 
         if (!stats.isDirectory()) continue;
 
-        let filePath = join(dir, "package.json");
+        let filePath = join(dir, 'package.json');
         let pkg;
 
         try {
@@ -123,7 +123,7 @@ export default class Project {
           valid = false;
 
           loggerError(
-            "packageMustDependOnCurrentVersion"
+            'packageMustDependOnCurrentVersion'
             /*messages.packageMustDependOnCurrentVersion(
               name,
               depName,

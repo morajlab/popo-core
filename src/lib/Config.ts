@@ -1,14 +1,14 @@
-import { EOL } from "os";
-import pkgUp from "pkg-up";
-import detectIndent from "detect-indent";
-import detectNewline from "detect-newline";
-import parseJson from "parse-json";
-import { readFile } from "./utils/fs";
-import { dirname, relative } from "path";
-import { matchWorkspaces } from "./utils/globs";
-import { error as loggerError } from "./utils/logger";
+import { EOL } from 'os';
+import pkgUp from 'pkg-up';
+import detectIndent from 'detect-indent';
+import detectNewline from 'detect-newline';
+import parseJson from 'parse-json';
+import { readFile } from '../utils/fs';
+import { dirname, relative } from 'path';
+import { matchWorkspaces } from '../utils/globs';
+import { error as loggerError } from '../utils/logger';
 //import * as messages from "./utils/messages";
-import { BoltError } from "./utils/errors";
+import { BoltError } from '../utils/errors';
 
 const getPackageStack = async (cwd: string) => {
   let stack = [];
@@ -36,7 +36,7 @@ const toArrayOfStrings = (value: BoltTypes.JSONValue, message: string) => {
   }
 
   return value.map((item) => {
-    if (typeof item !== "string") {
+    if (typeof item !== 'string') {
       throw new BoltError(message);
     } else {
       return item;
@@ -45,7 +45,7 @@ const toArrayOfStrings = (value: BoltTypes.JSONValue, message: string) => {
 };
 
 const toObject = (value: BoltTypes.JSONValue, message: string) => {
-  if (typeof value !== "object" || value === null || Array.isArray(value)) {
+  if (typeof value !== 'object' || value === null || Array.isArray(value)) {
     throw new BoltError(message);
   } else {
     return value;
@@ -57,7 +57,7 @@ const toObjectOfStrings = (value: BoltTypes.JSONValue, message: string) => {
   let safeCopy: any = {};
 
   Object.keys(safeRef).forEach((k) => {
-    if (typeof safeRef[k] !== "string") {
+    if (typeof safeRef[k] !== 'string') {
       throw new BoltError(message);
     } else {
       safeCopy[k] = safeRef[k];
@@ -80,15 +80,15 @@ export default class Config {
     this.fileContents = fileContents;
 
     try {
-      this.indent = detectIndent(fileContents).indent || "  ";
+      this.indent = detectIndent(fileContents).indent || '  ';
       this.newline = detectNewline(fileContents) || EOL;
       this.json = parseJson(fileContents);
     } catch (error) {
-      if (error.name === "JSONError") {
+      if (error.name === 'JSONError') {
         loggerError(
-          "errorParsingJSON" /*messages.errorParsingJSON(filePath)*/,
+          'errorParsingJSON' /*messages.errorParsingJSON(filePath)*/,
           {
-            emoji: "💥",
+            emoji: '💥',
             prefix: false,
           }
         );
@@ -98,8 +98,8 @@ export default class Config {
     }
   }
 
-  static findConfigFile = async (filePath: string): Promise<string> => {
-    return await pkgUp(filePath);
+  static findConfigFile = async (cwd: string): Promise<string> => {
+    return await pkgUp({ cwd });
   };
 
   static init = async (filePath: string): Promise<Config> => {
@@ -108,9 +108,9 @@ export default class Config {
     try {
       fileContents = await readFile(filePath);
     } catch (error) {
-      if (error.code === "ENOENT") {
+      if (error.code === 'ENOENT') {
         throw new BoltError(
-          "cannotInitConfigMissingPkgJSON" /*messages.cannotInitConfigMissingPkgJSON(filePath)*/
+          'cannotInitConfigMissingPkgJSON' /*messages.cannotInitConfigMissingPkgJSON(filePath)*/
         );
       }
 
@@ -168,7 +168,7 @@ export default class Config {
     let config = this.json;
 
     if (
-      typeof config !== "object" ||
+      typeof config !== 'object' ||
       config === null ||
       Array.isArray(config)
     ) {
@@ -196,7 +196,7 @@ export default class Config {
     let config = this.getConfig();
     let name = config.name;
 
-    if (typeof name !== "string") {
+    if (typeof name !== 'string') {
       throw new BoltError(
         `package.json#name must be a string. See "${this.filePath}"`
       );
@@ -208,7 +208,7 @@ export default class Config {
     let config = this.getConfig();
     let version = config.version;
 
-    if (typeof version !== "string") {
+    if (typeof version !== 'string') {
       throw new BoltError(
         `package.json#version must be a string. See "${this.filePath}"`
       );
@@ -234,7 +234,7 @@ export default class Config {
     let config = this.getConfig();
     let boltConfig = config.bolt;
 
-    if (typeof boltConfig === "undefined") return;
+    if (typeof boltConfig === 'undefined') return;
 
     return toObject(
       boltConfig,
@@ -246,7 +246,7 @@ export default class Config {
     let config = this.getBoltConfig();
     let boltVersion = config && config.version;
 
-    if (typeof boltVersion === "string") {
+    if (typeof boltVersion === 'string') {
       return boltVersion;
     }
 
@@ -256,11 +256,11 @@ export default class Config {
   getWorkspaces = (): string[] | void => {
     let boltConfig = this.getBoltConfig();
 
-    if (typeof boltConfig === "undefined") return;
+    if (typeof boltConfig === 'undefined') return;
 
     let workspaces = boltConfig.workspaces;
 
-    if (typeof workspaces === "undefined") return;
+    if (typeof workspaces === 'undefined') return;
 
     return toArrayOfStrings(
       workspaces,
@@ -272,7 +272,7 @@ export default class Config {
     let config = this.getConfig();
     let deps = config[depType];
 
-    if (typeof deps === "undefined") return;
+    if (typeof deps === 'undefined') return;
 
     return toObjectOfStrings(
       deps,
@@ -284,7 +284,7 @@ export default class Config {
     let config = this.getConfig();
     let scripts = config.scripts;
 
-    if (typeof scripts === "undefined") return;
+    if (typeof scripts === 'undefined') return;
 
     return toObjectOfStrings(
       scripts,
@@ -296,8 +296,8 @@ export default class Config {
     let config = this.getConfig();
     let bin = config.bin;
 
-    if (typeof bin === "undefined") return;
-    if (typeof bin === "string") return bin;
+    if (typeof bin === 'undefined') return;
+    if (typeof bin === 'string') return bin;
 
     return toObjectOfStrings(
       bin,

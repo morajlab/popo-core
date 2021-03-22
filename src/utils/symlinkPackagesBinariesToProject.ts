@@ -1,6 +1,6 @@
-import { join } from "path";
-import Project from "../Project";
-import { symlink } from "./fs";
+import { join } from 'path';
+import Project from '../lib/Project';
+import { symlink } from './fs';
 
 const symlinkPackagesBinaries = async (project: Project) => {
   let projectBinPath = project.pkg.nodeModulesBin;
@@ -17,11 +17,11 @@ const symlinkPackagesBinaries = async (project: Project) => {
     }
 
     for (let pkgBin of pkgBins) {
-      let binName: string = pkgBin.name.split("/").pop() as string;
+      let binName: string = pkgBin.name.split('/').pop() as string;
       let src = pkgBin.filePath;
       let dest = join(projectBinPath, binName);
 
-      symlinksToCreate.push({ src, dest, type: "exec" });
+      symlinksToCreate.push({ src, dest, type: 'exec' });
     }
   }
 

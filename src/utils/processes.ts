@@ -1,12 +1,12 @@
-import crossSpawn from "cross-spawn";
-import { stdout as loggerStdout, stderr as loggerStderr } from "./logger";
+import crossSpawn from 'cross-spawn';
+import { stdout as loggerStdout, stderr as loggerStderr } from './logger';
 /*import * as cleanUp from './cleanUp';
 import Package from '../Package';
 import type Project from '../Project';*/
-import pLimit from "p-limit";
-import { cpus } from "os";
-import { basename } from "path";
-import { globalOptions } from "../GlobalOptions";
+import pLimit from 'p-limit';
+import { cpus } from 'os';
+import { basename } from 'path';
+import { globalOptions } from '../lib/GlobalOptions';
 
 const limit = pLimit(cpus().length);
 const processes: any = new Set();
@@ -54,13 +54,13 @@ export const spawn = (
   limit(
     () =>
       new Promise((resolve, reject) => {
-        let stdoutBuf = Buffer.from("");
-        let stderrBuf = Buffer.from("");
+        let stdoutBuf = Buffer.from('');
+        let stderrBuf = Buffer.from('');
         let isTTY = process.stdout.isTTY && opts.tty;
         let cmdDisplayName = opts.useBasename ? basename(cmd) : cmd;
         let displayCmd =
-          opts.disableCmdPrefix ?? globalOptions.get("disableCmdPrefix");
-        let cmdStr = displayCmd ? "" : `${cmdDisplayName} ` + args.join(" ");
+          opts.disableCmdPrefix ?? globalOptions.get('disableCmdPrefix');
+        let cmdStr = displayCmd ? '' : `${cmdDisplayName} ` + args.join(' ');
 
         let spawnOpts: any /*child_process$spawnOpts*/ = {
           cwd: opts.cwd,
@@ -69,7 +69,7 @@ export const spawn = (
 
         if (isTTY) {
           spawnOpts.shell = true;
-          spawnOpts.stdio = "inherit";
+          spawnOpts.stdio = 'inherit';
         }
 
         let child = crossSpawn(cmd, args, spawnOpts);
@@ -77,7 +77,7 @@ export const spawn = (
         processes.add(child);
 
         if (child.stdout) {
-          child.stdout.on("data", (data: any) => {
+          child.stdout.on('data', (data: any) => {
             if (!opts.silent) {
               loggerStdout(cmdStr, data, opts.pkg);
             }
@@ -87,7 +87,7 @@ export const spawn = (
         }
 
         if (child.stderr) {
-          child.stderr.on("data", (data: any) => {
+          child.stderr.on('data', (data: any) => {
             if (!opts.silent) {
               loggerStderr(cmdStr, data, opts.pkg);
             }
@@ -96,9 +96,9 @@ export const spawn = (
           });
         }
 
-        child.on("error", reject);
+        child.on('error', reject);
 
-        child.on("close", (code: any) => {
+        child.on('close', (code: any) => {
           let stdout = stdoutBuf.toString();
           let stderr = stderrBuf.toString();
 

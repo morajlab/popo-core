@@ -1,5 +1,5 @@
-import chalk from "chalk";
-import Package from "../Package";
+import chalk from 'chalk';
+import Package from '../lib/Package';
 
 type Message = any;
 
@@ -28,7 +28,7 @@ function cmd(str: any) {
 }
 
 const importantSeparator = chalk.red(
-  "===============================IMPORTANT!==============================="
+  '===============================IMPORTANT!==============================='
 );
 
 export function packageMustDependOnCurrentVersion(
@@ -141,13 +141,13 @@ export function cannotRemoveDependencyDependendOnByWorkspaces(
     depName
   )} that is depended on by some workspaces:\n${packages
     .map((pkg) => ` - ${normalPkg(pkg.getName())}`)
-    .join("\n")}`;
+    .join('\n')}`;
 }
 export function externalDepsPassedToUpdatePackageVersions(
   externalDeps: Array<string>
 ): Message {
   return `Attempted to pass external dependencies to updatePackageVersions:\n${externalDeps.join(
-    ", "
+    ', '
   )}`;
 }
 
@@ -160,7 +160,7 @@ export function runWorkspacesRemoveDependency(depName: string): Message {
 export function couldntRemoveDependencies(deps: Array<string>): Message {
   return `Could not remove dependencies:\n${deps
     .map((depName) => ` - ${normalPkg(depName)}`)
-    .join("\n")}`;
+    .join('\n')}`;
 }
 
 export function couldntSymlinkDependencyNotExists(
@@ -206,11 +206,11 @@ export function helpContent(): string {
 }
 
 export function noPackagesMatchFilters(): Message {
-  return "No packages match the filters provided";
+  return 'No packages match the filters provided';
 }
 
 export function removedDependencies(): Message {
-  return "Removed dependencies";
+  return 'Removed dependencies';
 }
 
 export function npmPackageCouldNotBeFound(pkgName: string): Message {
@@ -250,22 +250,22 @@ export function npmInfo404(pkgName: string): Message {
 }
 
 export function lockingAllPackages(): Message {
-  return "Attempting to get locks for all packages";
+  return 'Attempting to get locks for all packages';
 }
 
 export function validatingProject(): Message {
-  return "[1/4] Validating project...";
+  return '[1/4] Validating project...';
 }
 export function installingProjectDependencies(): Message {
-  return "[2/4] Installing project dependencies...";
+  return '[2/4] Installing project dependencies...';
 }
 
 export function linkingWorkspaceDependencies(): Message {
-  return "[3/4] Linking workspace dependencies...";
+  return '[3/4] Linking workspace dependencies...';
 }
 
 export function linkingWorkspaceBinaries(): Message {
-  return "[4/4] Linking workspace binaries...";
+  return '[4/4] Linking workspace binaries...';
 }
 
 export function publishingPackage(
@@ -276,7 +276,7 @@ export function publishingPackage(
 }
 
 export function noUnpublishedPackagesToPublish(): Message {
-  return "No unpublished packages to publish";
+  return 'No unpublished packages to publish';
 }
 
 export function willPublishUnpublishedPackage(
@@ -314,11 +314,11 @@ export function failedToPublishPackage(pkgName: string): Message {
 }
 
 export function couldNotBeNormalized(): Message {
-  return "The following packages could not be normalized:";
+  return 'The following packages could not be normalized:';
 }
 
 export function installedAndLinkedWorkspaces(): Message {
-  return "Installed and linked workspaces.";
+  return 'Installed and linked workspaces.';
 }
 
 export function cannotInstallWorkspaceInProject(pkgName: string): Message {
@@ -355,7 +355,7 @@ export function unableToInstall(): Message {
 }
 
 export function cannotInitConfigMissingPkgJSON(filePath: string): Message {
-  let basePath = filePath.replace(/.package\.json$/, "");
+  let basePath = filePath.replace(/.package\.json$/, '');
   return `This folder does not contain a package.json:\n${basePath}
 
   Sometimes this is caused by incomplete packages or switching branches.
@@ -364,7 +364,7 @@ export function cannotInitConfigMissingPkgJSON(filePath: string): Message {
 }
 
 export function unsafeCycles(): Message {
-  return "Task ran with unsafe dependency cycles in workspaces.";
+  return 'Task ran with unsafe dependency cycles in workspaces.';
 }
 
 export function linkInternalPackage(internalPackageName: string): Message {
@@ -377,7 +377,7 @@ export function unlinkInternalPackage(internalPackageName: string): Message {
 
 export function errorWorkspaceUpgrade(): Message {
   return `${chalk.red.bold(
-    "[bolt workspace upgrade]"
+    '[bolt workspace upgrade]'
   )} Unable to upgrade dependencies for a single workspace.
 
 	In order to upgrade a dependency [across all the workspaces] please run ${cmd(
@@ -387,10 +387,10 @@ export function errorWorkspaceUpgrade(): Message {
 
 export function errorWorkspacesUpgrade(filterOpts: Array<string>): Message {
   return `${chalk.red.bold(
-    "[bolt workspaces upgrade]"
+    '[bolt workspaces upgrade]'
   )} Unable to upgrade dependencies for a single or some workspace.
   Therefore, flags ${chalk.red.bold(
-    filterOpts.join(" ")
+    filterOpts.join(' ')
   )} are not applicable here.
   In order to upgrade a dependency please run without filter flags - ${cmd(
     '"bolt upgrade [...args]"'
@@ -413,5 +413,5 @@ export function taskFailed(
   numFailures: number,
   failuresWithMsg: string[]
 ): Message {
-  return `${numFailures} tasks failed.\n${failuresWithMsg.join("\n")}`;
+  return `${numFailures} tasks failed.\n${failuresWithMsg.join('\n')}`;
 }

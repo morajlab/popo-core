@@ -1,25 +1,25 @@
-import { dirname, join } from "path";
-import Config from "./Config";
-import { DEPENDENCY_TYPES } from "./constants";
+import { dirname, join } from 'path';
+import Config from './Config';
+import { DEPENDENCY_TYPES } from './constants';
 /*import * as logger from "./utils/logger";
 import * as messages from "./utils/messages";
 import sortObject from "sort-object";*/
-import { BoltError } from "./utils/errors";
+import { BoltError } from '../utils/errors';
 
 export default class Package {
   filePath: string;
   dir: string;
   nodeModules: string;
   nodeModulesBin: string;
-  contents: string = "";
+  contents: string = '';
   config: Config;
-  indent: string = "";
+  indent: string = '';
 
   constructor(filePath: string, config: Config) {
     this.filePath = filePath;
     this.dir = dirname(filePath);
-    this.nodeModules = join(this.dir, "node_modules");
-    this.nodeModulesBin = join(this.nodeModules, ".bin");
+    this.nodeModules = join(this.dir, 'node_modules');
+    this.nodeModulesBin = join(this.nodeModules, '.bin');
     this.config = config;
   }
 
@@ -59,7 +59,7 @@ export default class Package {
 
       if (invalidTypes.length > 0) {
         throw new BoltError(
-          `Invalid dependency types to exclude: "${invalidTypes.join(",")}"`
+          `Invalid dependency types to exclude: "${invalidTypes.join(',')}"`
         );
       }
     }
@@ -169,9 +169,9 @@ export default class Package {
   getBins = (): { name: string; filePath: string }[] => {
     let bin = this.config.getBin();
 
-    if (typeof bin === "undefined") {
+    if (typeof bin === 'undefined') {
       return [];
-    } else if (typeof bin === "string") {
+    } else if (typeof bin === 'string') {
       return [
         {
           name: this.config.getName(),

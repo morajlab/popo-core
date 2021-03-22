@@ -1,13 +1,13 @@
-import { join, basename, relative, sep } from "path";
+import { join, basename, relative, sep } from 'path';
 //import pathIsInside from 'path-is-inside';
-import includes from "array-includes";
-import Project from "../Project";
-import Package from "../Package";
-import { BoltError } from "./errors";
-import { readdirSafe, readlink, symlinkExists, mkdirp, symlink } from "./fs";
-import { error as loggerError } from "./logger";
+import includes from 'array-includes';
+import Project from '../lib/Project';
+import Package from '../lib/Package';
+import { BoltError } from './errors';
+import { readdirSafe, readlink, symlinkExists, mkdirp, symlink } from './fs';
+import { error as loggerError } from './logger';
 //import * as messages from './messages';
-import * as yarn from "./yarn";
+import * as yarn from './yarn';
 
 const symlinkPackageDependencies = async (
   project: Project,
@@ -35,7 +35,7 @@ const symlinkPackageDependencies = async (
       valid = false;
 
       loggerError(
-        "depMustBeAddedToProject"
+        'depMustBeAddedToProject'
         /*messages.depMustBeAddedToProject(pkg.config.getName(), depName)*/
       );
 
@@ -46,7 +46,7 @@ const symlinkPackageDependencies = async (
       valid = false;
 
       loggerError(
-        "couldntSymlinkDependencyNotExists"
+        'couldntSymlinkDependencyNotExists'
         /*messages.couldntSymlinkDependencyNotExists(
           pkg.config.getName(),
           depName
@@ -60,7 +60,7 @@ const symlinkPackageDependencies = async (
       valid = false;
 
       loggerError(
-        "depMustMatchProject"
+        'depMustMatchProject'
         /*messages.depMustMatchProject(
           pkg.config.getName(),
           depName,
@@ -75,7 +75,7 @@ const symlinkPackageDependencies = async (
     let src = join(project.pkg.nodeModules, depName);
     let dest = join(pkg.nodeModules, depName);
 
-    symlinksToCreate.push({ src, dest, type: "junction" });
+    symlinksToCreate.push({ src, dest, type: 'junction' });
   }
 
   for (let dependency of internalDeps) {
@@ -83,11 +83,11 @@ const symlinkPackageDependencies = async (
     let src = depWorkspace.pkg.dir;
     let dest = join(pkg.nodeModules, dependency);
 
-    symlinksToCreate.push({ src, dest, type: "junction" });
+    symlinksToCreate.push({ src, dest, type: 'junction' });
   }
 
   if (!valid) {
-    throw new BoltError("Cannot symlink invalid set of dependencies.");
+    throw new BoltError('Cannot symlink invalid set of dependencies.');
   }
 
   let projectBinFiles = await readdirSafe(project.pkg.nodeModulesBin);
@@ -106,7 +106,7 @@ const symlinkPackageDependencies = async (
     let pathParts = binFileRelativeToNodeModules.split(sep);
     let pkgName = pathParts[0];
 
-    if (pkgName.startsWith("@")) {
+    if (pkgName.startsWith('@')) {
       pkgName += `/${pathParts[1]}`;
     }
 
@@ -115,7 +115,7 @@ const symlinkPackageDependencies = async (
     symlinksToCreate.push({
       src: binPath,
       dest: workspaceBinPath,
-      type: "exec",
+      type: 'exec',
     });
   }
 
@@ -134,13 +134,13 @@ const symlinkPackageDependencies = async (
       continue;
     }
 
-    if (typeof depBinFiles === "string") {
-      let binName = dependency.split("/").pop();
+    if (typeof depBinFiles === 'string') {
+      let binName = dependency.split('/').pop();
       let src = join(depWorkspace.pkg.dir, depBinFiles);
       let dest = join(pkg.nodeModulesBin, binName);
       let exists = await symlinkExists(dest);
 
-      !exists && symlinksToCreate.push({ src, dest, type: "exec" });
+      !exists && symlinksToCreate.push({ src, dest, type: 'exec' });
 
       continue;
     }
@@ -152,12 +152,12 @@ const symlinkPackageDependencies = async (
       if (!symlinksToCreate.find((symlink) => symlink.dest === dest)) {
         let exists = await symlinkExists(dest);
 
-        !exists && symlinksToCreate.push({ src, dest, type: "exec" });
+        !exists && symlinksToCreate.push({ src, dest, type: 'exec' });
       }
     }
   }
 
-  await yarn.runIfExists(pkg, "preinstall");
+  await yarn.runIfExists(pkg, 'preinstall');
 
   await Promise.all(
     directoriesToCreate.map((dirName) => {
@@ -175,9 +175,9 @@ const symlinkPackageDependencies = async (
     })
   );
 
-  await yarn.runIfExists(pkg, "postinstall");
-  await yarn.runIfExists(pkg, "prepublish");
-  await yarn.runIfExists(pkg, "prepare");
+  await yarn.runIfExists(pkg, 'postinstall');
+  await yarn.runIfExists(pkg, 'prepublish');
+  await yarn.runIfExists(pkg, 'prepare');
 };
 
 export default symlinkPackageDependencies;

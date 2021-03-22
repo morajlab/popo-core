@@ -1,6 +1,6 @@
-import chalk from "chalk";
-import Package from "../Package";
-import { toString } from "./messages";
+import chalk from 'chalk';
+import Package from '../lib/Package';
+import { toString } from './messages';
 
 type Message = any;
 
@@ -12,7 +12,7 @@ type LoggerOpts = {
 function fmt(str: Message | Buffer | string, opts: LoggerOpts = {}) {
   let result = toString(str);
 
-  let prefix = opts.prefix || "";
+  let prefix = opts.prefix || '';
 
   if (opts.emoji) {
     prefix = `${opts.emoji}  ${prefix}`;
@@ -21,20 +21,20 @@ function fmt(str: Message | Buffer | string, opts: LoggerOpts = {}) {
   if (prefix) {
     result = result
       .trimRight()
-      .split("\n")
+      .split('\n')
       .map((line: any) => `${prefix} ${line}`)
-      .join("\n");
+      .join('\n');
   }
 
   return result;
 }
 
 function prompt(pkg: any, cmd: any) {
-  let prompt = pkg ? "(" + pkg.config.getName() + ")" : "";
+  let prompt = pkg ? '(' + pkg.config.getName() + ')' : '';
   if (!cmd) {
     return prompt;
   }
-  return prompt + " $ " + cmd;
+  return prompt + ' $ ' + cmd;
 }
 
 function write(
@@ -55,14 +55,14 @@ export function title(
   opts: LoggerOpts = {}
 ) {
   let str = chalk.bold(title);
-  if (subtitle) str += " " + chalk.dim(subtitle);
+  if (subtitle) str += ' ' + chalk.dim(subtitle);
   write(str, opts);
 }
 
-const INFO_PREFIX = chalk.cyan("info");
-const WARN_PREFIX = chalk.yellow("warn");
-const ERROR_PREFIX = chalk.red("error");
-const SUCCESS_PREFIX = chalk.green("success");
+const INFO_PREFIX = chalk.cyan('info');
+const WARN_PREFIX = chalk.yellow('warn');
+const ERROR_PREFIX = chalk.red('error');
+const SUCCESS_PREFIX = chalk.green('success');
 
 export function info(message: Message, opts: LoggerOpts = {}) {
   write(message, { prefix: INFO_PREFIX, ...opts }, true);
@@ -103,8 +103,8 @@ export function stderr(
 export function cmd(cmd: string, args: Array<string>, opts: LoggerOpts = {}) {
   let msg = chalk.dim(prompt(null, cmd));
   if (args.length) {
-    msg += " ";
-    msg += chalk.magenta(args.join(" "));
+    msg += ' ';
+    msg += chalk.magenta(args.join(' '));
   }
   write(msg, {}, true);
 }

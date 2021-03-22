@@ -1,6 +1,6 @@
 import pkgUp from 'pkg-up';
 
-const boltPkgPath = pkgUp.sync(__dirname);
+const boltPkgPath = pkgUp.sync({ cwd: __dirname });
 const boltPkg = require(boltPkgPath);
 
 export const DEPENDENCY_TYPES = [
@@ -8,7 +8,7 @@ export const DEPENDENCY_TYPES = [
   'devDependencies',
   'peerDependencies',
   'bundledDependencies',
-  'optionalDependencies'
+  'optionalDependencies',
 ];
 
 export const DEPENDENCY_TYPE_FLAGS_MAP = {
@@ -17,7 +17,7 @@ export const DEPENDENCY_TYPE_FLAGS_MAP = {
   optional: 'optionalDependencies',
   D: 'devDependencies',
   P: 'peerDependencies',
-  O: 'optionalDependencies'
+  O: 'optionalDependencies',
 };
 
 export const BOLT_VERSION = boltPkg.version;

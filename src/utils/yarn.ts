@@ -1,12 +1,12 @@
-import includes from "array-includes";
-import projectBinPath from "project-bin-path";
-import { join, relative } from "path";
-import Package from "../Package";
-import Project from "../Project";
-import { spawn } from "./processes";
-import { readdirSafe } from "../utils/fs";
+import includes from 'array-includes';
+import projectBinPath from 'project-bin-path';
+import { join, relative } from 'path';
+import Package from '../lib/Package';
+import Project from '../lib/Project';
+import { spawn } from './processes';
+import { readdirSafe } from '../utils/fs';
 //import * as logger from '../utils/fs';
-import { DEPENDENCY_TYPE_FLAGS_MAP, BOLT_VERSION } from "../constants";
+import { DEPENDENCY_TYPE_FLAGS_MAP, BOLT_VERSION } from '../lib/constants';
 
 const getLocalBinPath = (): Promise<string> =>
   projectBinPath(
@@ -47,23 +47,23 @@ const spawnWithUserAgent = async (
 
 export const install = async (
   cwd: string,
-  lockfileMode: BoltTypes.LockFileMode = "default"
+  lockfileMode: BoltTypes.LockFileMode = 'default'
 ) => {
-  let localYarn = join(await getLocalBinPath(), "yarn");
+  let localYarn = join(await getLocalBinPath(), 'yarn');
   let installFlags = [];
 
   switch (lockfileMode) {
-    case "frozen":
-      installFlags.push("--frozen-lockfile");
+    case 'frozen':
+      installFlags.push('--frozen-lockfile');
       break;
-    case "pure":
-      installFlags.push("--pure-lockfile");
+    case 'pure':
+      installFlags.push('--pure-lockfile');
       break;
     default:
       break;
   }
 
-  await spawnWithUserAgent(localYarn, ["install", ...installFlags], {
+  await spawnWithUserAgent(localYarn, ['install', ...installFlags], {
     cwd,
     tty: true,
     useBasename: true,
@@ -129,9 +129,9 @@ export async function upgrade(
 export async function run(pkg: Package, script: string, args: string[] = []) {
   //let project = await Project.init(pkg.dir);
   await Project.init(pkg.dir);
-  let localYarn = join(await getLocalBinPath(), "yarn");
+  let localYarn = join(await getLocalBinPath(), 'yarn');
   let localYarnRelative = relative(pkg.dir, localYarn);
-  let spawnArgs = ["run", "-s", script];
+  let spawnArgs = ['run', '-s', script];
 
   if (args.length) {
     spawnArgs = spawnArgs.concat(args);
@@ -207,18 +207,18 @@ export async function info(cwd: string, spawnArgs: Array<string> = []) {
 }
 */
 export const userAgent = async () => {
-  let localYarn = join(await getLocalBinPath(), "yarn");
+  let localYarn = join(await getLocalBinPath(), 'yarn');
 
   let { stdout: yarnUserAgent } = await spawn(
     localYarn,
-    ["config", "get", "user-agent"],
+    ['config', 'get', 'user-agent'],
     {
       tty: false,
       silent: true,
     }
   );
 
-  return yarnUserAgent.replace(/\n/g, "");
+  return yarnUserAgent.replace(/\n/g, '');
 }; /*
 
 export async function globalCli(
