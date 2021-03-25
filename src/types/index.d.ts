@@ -1,3 +1,10 @@
+declare module 'cmd-shim';
+declare module 'read-cmd-shim';
+declare module 'typeable-promisify';
+declare module 'rimraf';
+declare module 'cross-spawn';
+declare module 'fixturez';
+
 declare namespace BoltTypes {
   type DependencySet = {
     [key: string]: string;
@@ -16,7 +23,7 @@ declare namespace BoltTypes {
     | { [key: string]: JSONValue };
 
   type SpawnOpts = {
-    orderMode?: "serial" | "parallel" | "parallel-nodes";
+    orderMode?: 'serial' | 'parallel' | 'parallel-nodes';
     bail?: boolean;
     excludeFromGraph?: Array<configDependencyType>;
   };
@@ -34,10 +41,10 @@ declare namespace BoltTypes {
   };
 
   type configDependencyType =
-    | "dependencies"
-    | "devDependencies"
-    | "peerDependencies"
-    | "optionalDependencies";
+    | 'dependencies'
+    | 'devDependencies'
+    | 'peerDependencies'
+    | 'optionalDependencies';
 
-  type LockFileMode = "default" | "pure" | "frozen";
+  type LockFileMode = 'default' | 'pure' | 'frozen';
 }

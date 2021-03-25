@@ -17,7 +17,7 @@ export function writeFile(
   return promisify((cb: any) => fs.writeFile(filePath, fileContents, cb));
 }
 
-export function mkdirp(filePath: string): Promise<void> {
+export function mkdirp(filePath: string): Promise<string> {
   return makeDir(filePath);
 }
 

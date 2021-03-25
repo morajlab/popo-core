@@ -50,7 +50,7 @@ export const spawn = (
   cmd: string,
   args: string[],
   opts: any = {} //SpawnOptions = {}
-) =>
+): Promise<any> =>
   limit(
     () =>
       new Promise((resolve, reject) => {
